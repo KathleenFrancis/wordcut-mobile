@@ -51,8 +51,8 @@ export async function loadDictionaryFromAsset(language: 'fr' | 'en'): Promise<Re
     // Les fichiers doivent être placés dans assets/dictionaries/
     // Exemple: assets/dictionaries/fr_dict.txt
     const assetModule = language === 'fr'
-      ? require('../../assets/dictionaries/fr_dict.txt')
-      : require('../../assets/dictionaries/en_dict.txt');
+      ? require('../assets/dictionaries/fr_dict.txt')
+      : require('../assets/dictionaries/en_dict.txt');
     
     const asset = Asset.fromModule(assetModule);
     await asset.downloadAsync();

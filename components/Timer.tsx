@@ -27,7 +27,7 @@ export function Timer({ initialTime, onTimeUp, isRunning }: TimerProps) {
 
   useEffect(() => {
     setTimeLeft(initialTime);
-    width.value = 100;
+    width.value = withTiming(100, { duration: 0 });
   }, [initialTime, width]);
 
   useEffect(() => {
