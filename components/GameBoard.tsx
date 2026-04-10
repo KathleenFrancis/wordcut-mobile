@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/Colors';
 import { Sizes } from '../constants/Sizes';
@@ -25,6 +25,15 @@ export function GameBoard({ currentWord, onSubmitWord, canSubmit }: GameBoardPro
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [error, setError] = useState<string>('');
   const [arrangedLetters, setArrangedLetters] = useState<LetterItem[]>([]);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  const gap = Sizes.spacing.sm;
+  const letterCount = arrangedLetters.length;
+  const maxTileSize = Sizes.letterTile.size;
+  const tileSize = containerWidth > 0 && letterCount > 0
+    ? Math.min(maxTileSize, Math.floor((containerWidth - gap * (letterCount - 1)) / letterCount))
+    : maxTileSize;
+  const tileFontSize = Math.round(tileSize * (Sizes.letterTile.fontSize / maxTileSize));
 
   // Initialiser les lettres quand le mot change
   useEffect(() => {
@@ -85,8 +94,11 @@ export function GameBoard({ currentWord, onSubmitWord, canSubmit }: GameBoardPro
       {/* Mot actuel */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t.game.currentWord}</Text>
-        <View style={styles.currentWordContainer}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.lettersContainer}>
+        <View
+          style={styles.currentWordContainer}
+          onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+        >
+          <View style={styles.lettersContainer}>
             {arrangedLetters.map((item, index) => {
               const isSelected = selectedIndices.includes(index);
               return (
@@ -95,16 +107,17 @@ export function GameBoard({ currentWord, onSubmitWord, canSubmit }: GameBoardPro
                   onPress={() => toggleLetterSelection(index)}
                   style={[
                     styles.letterTile,
+                    { width: tileSize, height: tileSize },
                     isSelected && styles.letterTileSelected,
                   ]}
                 >
-                  <Text style={[styles.letterText, isSelected && styles.letterTextSelected]}>
+                  <Text style={[styles.letterText, { fontSize: tileFontSize }, isSelected && styles.letterTextSelected]}>
                     {item.letter.toUpperCase()}
                   </Text>
                 </Pressable>
               );
             })}
-          </ScrollView>
+          </View>
         </View>
         <Text style={styles.hint}>{t.game.selectLetters}</Text>
       </View>
@@ -170,12 +183,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   lettersContainer: {
+    flexDirection: 'row',
     gap: Sizes.spacing.sm,
     paddingVertical: Sizes.spacing.sm,
+    justifyContent: 'center',
   },
   letterTile: {
-    width: Sizes.letterTile.size,
-    height: Sizes.letterTile.size,
     borderRadius: Sizes.borderRadius.lg,
     backgroundColor: Colors.blue[100],
     justifyContent: 'center',
@@ -188,7 +201,6 @@ const styles = StyleSheet.create({
     borderColor: Colors.red[600],
   },
   letterText: {
-    fontSize: Sizes.letterTile.fontSize,
     fontWeight: 'bold',
     color: Colors.blue[700],
   },

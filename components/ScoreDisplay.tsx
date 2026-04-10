@@ -21,7 +21,7 @@ export function ScoreDisplay({ score }: ScoreDisplayProps) {
       key={score}
       style={styles.container}
     >
-      <Ionicons name="trophy" size={Sizes.icon.md} color={Colors.white} />
+      <Ionicons name="trophy" size={Sizes.icon.sm} color={Colors.white} />
       <View style={styles.textContainer}>
         <Text style={styles.label}>{t.game.score}</Text>
         <Text style={styles.score}>{score}</Text>
@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Sizes.spacing.md,
+    gap: Sizes.spacing.sm,
     backgroundColor: Colors.primary.blue,
-    paddingHorizontal: Sizes.spacing.lg,
-    paddingVertical: Sizes.spacing.md,
+    paddingHorizontal: Sizes.spacing.md,
+    paddingVertical: Sizes.spacing.sm,
     borderRadius: Sizes.borderRadius.full,
     ...Sizes.shadow.large,
   },
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   score: {
-    fontSize: Sizes.fontSize.xxl,
+    fontSize: Sizes.fontSize.lg,
     fontWeight: 'bold',
     color: Colors.white,
   },

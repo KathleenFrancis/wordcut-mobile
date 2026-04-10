@@ -91,9 +91,10 @@ export function Timer({ initialTime, onTimeUp, isRunning }: TimerProps) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
-    paddingHorizontal: Sizes.spacing.lg,
-    paddingVertical: Sizes.spacing.md,
+    paddingHorizontal: Sizes.spacing.md,
+    paddingVertical: Sizes.spacing.sm,
     borderRadius: Sizes.borderRadius.full,
+    flexShrink: 1,
     ...Sizes.shadow.large,
   },
   containerCritical: {
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     color: Colors.gray[600],
   },
   time: {
-    fontSize: Sizes.fontSize.xxl,
+    fontSize: Sizes.fontSize.lg,
     fontWeight: 'bold',
   },
   progressBar: {

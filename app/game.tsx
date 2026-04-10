@@ -280,8 +280,9 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flexDirection: 'row',
-    gap: Sizes.spacing.md,
+    gap: Sizes.spacing.sm,
     alignItems: 'center',
+    flexShrink: 1,
   },
   content: {
     flex: 1,
