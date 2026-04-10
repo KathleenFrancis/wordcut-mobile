@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "WordCut",
-    "slug": "wordcut",
+    "slug": "wordcut-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,12 +12,16 @@
       "resizeMode": "contain",
       "backgroundColor": "#dbeafe"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.kathleen.wordcut",
       "infoPlist": {
-        "UIBackgroundModes": ["audio"]
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
@@ -42,7 +46,8 @@
         {
           "android": {
             "enableProguardInReleaseBuilds": true,
-            "enableShrinkResourcesInReleaseBuilds": true
+            "enableShrinkResourcesInReleaseBuilds": true,
+            "enableMinifyInReleaseBuilds": true
           }
         }
       ]
@@ -51,9 +56,11 @@
       "router": {
         "origin": false
       },
-      "eas": {}
+      "eas": {
+        "projectId": "ce46a142-e289-4b43-8c5e-fddb9d177fb2"
+      }
     },
-    "owner": "kathleen francis",
+    "owner": "kathleenfrancis",
     "runtimeVersion": {
       "policy": "appVersion"
     },
