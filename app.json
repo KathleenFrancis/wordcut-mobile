@@ -51,9 +51,7 @@
       "router": {
         "origin": false
       },
-      "eas": {
-        "projectId": "your-project-id-here"
-      }
+      "eas": {}
     },
     "owner": "kathleen francis",
     "runtimeVersion": {
