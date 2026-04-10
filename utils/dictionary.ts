@@ -51,8 +51,8 @@ export async function loadDictionaryFromAsset(language: 'fr' | 'en'): Promise<Re
     // Les fichiers doivent être placés dans assets/dictionaries/
     // Exemple: assets/dictionaries/fr_dict.txt
     const assetModule = language === 'fr'
-      ? require('../../assets/dictionaries/fr_dict.txt')
-      : require('../../assets/dictionaries/en_dict.txt');
+      ? require('../assets/dictionaries/fr_dict.txt')
+      : require('../assets/dictionaries/en_dict.txt');
     
     const asset = Asset.fromModule(assetModule);
     await asset.downloadAsync();
@@ -147,11 +147,12 @@ export function isValidWord(word: string): boolean {
 // Obtenir un mot de départ aléatoire (≥ 5 lettres)
 export function getRandomStartWord(): string {
   const minLength = 5;
-  
+  const maxLength = 8;
+
   // Filtrer les longueurs valides
   const possibleLengths = Object.keys(currentDictionary)
     .map(Number)
-    .filter(length => length >= minLength && currentDictionary[length].size > 0);
+    .filter(length => length >= minLength && length <= maxLength && currentDictionary[length].size > 0);
   
   if (possibleLengths.length === 0) {
     throw new Error('No words available in dictionary');
