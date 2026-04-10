@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet, ScrollView, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -38,30 +38,7 @@ export default function Game() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
 
-  // Initialiser le dictionnaire et le jeu
-  useEffect(() => {
-    initializeGame();
-  }, [dictionaryLanguage]);
-
-  const initializeGame = async () => {
-    setIsInitializing(true);
-    try {
-      await initializeDictionary(dictionaryLanguage);
-      startNewGame();
-    } catch (error) {
-      console.error('Error initializing game:', error);
-      Alert.alert(
-        language === 'fr' ? 'Erreur' : 'Error',
-        language === 'fr'
-          ? 'Erreur lors du chargement du dictionnaire'
-          : 'Error loading dictionary'
-      );
-    } finally {
-      setIsInitializing(false);
-    }
-  };
-
-  const startNewGame = () => {
+  const startNewGame = useCallback(() => {
     try {
       const startWord = getRandomStartWord();
       setGameState({
@@ -83,7 +60,30 @@ export default function Game() {
           : 'Unable to start a game'
       );
     }
-  };
+  }, [language]);
+
+  const initializeGame = useCallback(async () => {
+    setIsInitializing(true);
+    try {
+      await initializeDictionary(dictionaryLanguage);
+      startNewGame();
+    } catch (error) {
+      console.error('Error initializing game:', error);
+      Alert.alert(
+        language === 'fr' ? 'Erreur' : 'Error',
+        language === 'fr'
+          ? 'Erreur lors du chargement du dictionnaire'
+          : 'Error loading dictionary'
+      );
+    } finally {
+      setIsInitializing(false);
+    }
+  }, [dictionaryLanguage, language, startNewGame]);
+
+  // Initialiser le dictionnaire et le jeu
+  useEffect(() => {
+    initializeGame();
+  }, [initializeGame]);
 
   const handleSubmitWord = (newWord: string, removedCount: number) => {
     // Vérifier si le jeu est terminé

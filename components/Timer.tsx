@@ -28,7 +28,7 @@ export function Timer({ initialTime, onTimeUp, isRunning }: TimerProps) {
   useEffect(() => {
     setTimeLeft(initialTime);
     width.value = 100;
-  }, [initialTime]);
+  }, [initialTime, width]);
 
   useEffect(() => {
     if (!isRunning) return;
@@ -48,9 +48,8 @@ export function Timer({ initialTime, onTimeUp, isRunning }: TimerProps) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isRunning, onTimeUp, initialTime]);
+  }, [isRunning, onTimeUp, initialTime, width]);
 
-  const percentage = (timeLeft / initialTime) * 100;
   const isLowTime = timeLeft <= 20;
   const isCritical = timeLeft <= 10;
 

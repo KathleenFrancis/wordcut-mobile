@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
+import Animated, { ZoomIn } from 'react-native-reanimated';
 import { Colors } from '../constants/Colors';
 import { Sizes } from '../constants/Sizes';
 import { useLanguage } from '../contexts/LanguageContext';
