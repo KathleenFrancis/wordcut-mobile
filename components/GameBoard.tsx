@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import DraggableFlatList, {
-  RenderItemParams,
-  ScaleDecorator,
-} from 'react-native-draggable-flatlist';
+import { View, Text, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/Colors';
 import { Sizes } from '../constants/Sizes';
@@ -16,7 +12,7 @@ interface GameBoardProps {
   canSubmit: boolean;
 }
 
-interface DraggableLetter {
+interface LetterItem {
   id: string;
   letter: string;
 }
@@ -28,7 +24,7 @@ export function GameBoard({ currentWord, onSubmitWord, canSubmit }: GameBoardPro
 
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [error, setError] = useState<string>('');
-  const [arrangedLetters, setArrangedLetters] = useState<DraggableLetter[]>([]);
+  const [arrangedLetters, setArrangedLetters] = useState<LetterItem[]>([]);
 
   // Initialiser les lettres quand le mot change
   useEffect(() => {
@@ -44,7 +40,7 @@ export function GameBoard({ currentWord, onSubmitWord, canSubmit }: GameBoardPro
   // Toggle sélection d'une lettre
   const toggleLetterSelection = (index: number) => {
     setError('');
-    
+
     if (selectedIndices.includes(index)) {
       setSelectedIndices(selectedIndices.filter(i => i !== index));
     } else {
@@ -84,44 +80,31 @@ export function GameBoard({ currentWord, onSubmitWord, canSubmit }: GameBoardPro
     onSubmitWord(newWord, selectedIndices.length);
   };
 
-  const renderLetterTile = ({ item, drag, isActive, getIndex }: RenderItemParams<DraggableLetter>) => {
-    const index = getIndex();
-    const isSelected = index !== undefined && selectedIndices.includes(index);
-
-    return (
-      <ScaleDecorator>
-        <Pressable
-          onPress={() => index !== undefined && toggleLetterSelection(index)}
-          onLongPress={drag}
-          disabled={isActive}
-          style={[
-            styles.letterTile,
-            isSelected && styles.letterTileSelected,
-            isActive && styles.letterTileActive,
-          ]}
-        >
-          <Text style={[styles.letterText, isSelected && styles.letterTextSelected]}>
-            {item.letter.toUpperCase()}
-          </Text>
-        </Pressable>
-      </ScaleDecorator>
-    );
-  };
-
   return (
     <View style={styles.container}>
       {/* Mot actuel */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t.game.currentWord}</Text>
         <View style={styles.currentWordContainer}>
-          <DraggableFlatList
-            data={arrangedLetters}
-            onDragEnd={({ data }) => setArrangedLetters(data)}
-            keyExtractor={(item) => item.id}
-            renderItem={renderLetterTile}
-            horizontal
-            contentContainerStyle={styles.lettersContainer}
-          />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.lettersContainer}>
+            {arrangedLetters.map((item, index) => {
+              const isSelected = selectedIndices.includes(index);
+              return (
+                <Pressable
+                  key={item.id}
+                  onPress={() => toggleLetterSelection(index)}
+                  style={[
+                    styles.letterTile,
+                    isSelected && styles.letterTileSelected,
+                  ]}
+                >
+                  <Text style={[styles.letterText, isSelected && styles.letterTextSelected]}>
+                    {item.letter.toUpperCase()}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
         </View>
         <Text style={styles.hint}>{t.game.selectLetters}</Text>
       </View>
@@ -203,9 +186,6 @@ const styles = StyleSheet.create({
   letterTileSelected: {
     backgroundColor: Colors.red[500],
     borderColor: Colors.red[600],
-  },
-  letterTileActive: {
-    opacity: 0.8,
   },
   letterText: {
     fontSize: Sizes.letterTile.fontSize,
