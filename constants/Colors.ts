@@ -99,10 +99,10 @@ export const Colors = {
 
   // Gradients (pour LinearGradient)
   gradients: {
-    primary: ["#dbeafe", "#e9d5ff", "#fce7f3"],
-    blue: ["#3b82f6", "#2563eb"],
-    purple: ["#9333ea", "#7e22ce"],
-    green: ["#10b981", "#059669"],
-    accent: ["#3b82f6", "#9333ea", "#ec4899"],
+    primary: ["#dbeafe", "#e9d5ff", "#fce7f3"] as const,
+    blue: ["#3b82f6", "#2563eb"] as const,
+    purple: ["#9333ea", "#7e22ce"] as const,
+    green: ["#10b981", "#059669"] as const,
+    accent: ["#3b82f6", "#9333ea", "#ec4899"] as const,
   },
 };
